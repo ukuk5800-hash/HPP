@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>株式会社Axia.City — AI経営OS研修</title>
+
+  <!-- [変更] Google Fontsを追加 (Playfair Display + Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       [変更] CSS変数 - カラー・タイポグラフィ定義
+       ============================================= */
+    :root {
+      --black:      #000000;
+      --navy:       #0B1F3B;
+      --navy-light: #112749;
+      --gold:       #C9A14A;
+      --silver:     #C0C0C0;
+      --blue:       #2F80ED;
+      --white:      #FFFFFF;
+      --text-main:  #E8E8E8;
+      --text-sub:   #9AA5B4;
+      --border:     rgba(255,255,255,0.08);
+      --border-gold: rgba(201,161,74,0.35);
+
+      --font-en: 'Playfair Display', Georgia, serif;
+      --font-ja: 'Noto Sans JP', sans-serif;
+
+      --max-w: 1000px;
+      --section-py: 100px;
+    }
+
+    /* =============================================
+       [変更] リセット & ベーススタイル
+       ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--navy);
+      color: var(--text-main);
+      font-family: var(--font-ja);
+      font-weight: 300;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* =============================================
+       [変更] セクション区切り - ゴールドの細線
+       ============================================= */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+      margin: 0;
+    }
+
+    /* =============================================
+       [変更] セクション共通ラベル
+       ============================================= */
+    .section-label {
+      font-family: var(--font-en);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    /* =============================================
+       [変更] 見出しスタイル
+       ============================================= */
+    .section-title {
+      font-family: var(--font-en);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .section-title-ja {
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 300;
+      color: var(--text-main);
+      margin-bottom: 40px;
+      line-height: 1.5;
+    }
+
+    /* =============================================
+       [変更] ナビゲーション - ダーク & ミニマル
+       ============================================= */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(11, 31, 59, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    /* [維持] ロゴ */
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+      filter: brightness(1.1);
+    }
+
+    /* [変更] ナビリンク */
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text-sub);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+
+    /* [変更] CTAボタン */
+    .btn-primary {
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--blue);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      font-family: var(--font-ja);
+    }
+    .btn-primary:hover {
+      background: #1a6fd4;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 12px 28px;
+      background: transparent;
+      color: var(--text-sub);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      font-family: var(--font-ja);
+    }
+    .btn-outline:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    /* =============================================
+       [変更] ① ファーストビュー - 英語+日本語キャッチ
+       ============================================= */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 0 32px;
+      background: var(--black);
+    }
+
+    /* 背景グリッド装飾 */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,161,74,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,161,74,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* 右側の背景画像 */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 45%;
+      height: 100%;
+      background: url('https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/training-class_e083ac41.jpeg') center/cover no-repeat;
+      opacity: 0.18;
+    }
+
+    .hero-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      padding-top: 64px;
+    }
+
+    /* [変更] 英語キャッチコピー */
+    .hero-en {
+      font-family: var(--font-en);
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 700;
+      line-height: 1.0;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .hero-en span {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    /* [変更] 日本語サブキャッチ */
+    .hero-ja {
+      font-size: clamp(16px, 2.5vw, 22px);
+      font-weight: 300;
+      color: var(--text-sub);
+      margin-bottom: 32px;
+      letter-spacing: 0.05em;
+    }
+
+    /* [変更] タグライン */
+    .hero-tagline {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text-main);
+      max-width: 520px;
+      margin-bottom: 48px;
+    }
+
+    /* [変更] ボタンは1つのみ */
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* 右側ラベル */
+    .hero-target {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      border: 1px solid var(--border-gold);
+      padding: 6px 14px;
+      margin-bottom: 32px;
+      text-transform: uppercase;
+    }
+
+    /* =============================================
+       [変更] ② サービスセクション
+       ============================================= */
+    #courses {
+      padding: var(--section-py) 32px;
+      background: var(--navy);
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 60px;
+    }
+
+    /* [変更] コースカード */
+    .course-card {
+      background: var(--navy);
+      padding: 40px 32px;
+      transition: background 0.2s;
+    }
+    .course-card:hover {
+      background: var(--navy-light);
+    }
+
+    .course-level {
+      font-family: var(--font-en);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .course-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .course-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .course-hours {
+      font-family: var(--font-en);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .course-hours span {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-sub);
+    }
+
+    .course-items {
+      margin-top: 20px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+    .course-items li {
+      font-size: 12px;
+      color: var(--text-sub);
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .course-items li::before {
+      content: '→';
+      color: var(--blue);
+      font-size: 10px;
+    }
+
+    /* [変更] その他研修プログラム */
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 60px;
+    }
+
+    .program-card {
+      background: var(--navy);
+      padding: 36px 28px;
+      transition: background 0.2s;
+    }
+    .program-card:hover { background: var(--navy-light); }
+
+    .program-tag {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+
+    .program-name {
+      font-family: var(--font-en);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .program-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .program-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .program-price {
+      font-family: var(--font-en);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .program-price small {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text-sub);
+      font-family: var(--font-ja);
+    }
+
+    .program-items {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .program-items li {
+      font-size: 12px;
+      color: var(--text-sub);
+      padding: 4px 0;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .program-items li::before {
+      content: '—';
+      color: var(--border-gold);
+      font-size: 10px;
+    }
+
+    /* =============================================
+       [変更] ③ アプローチ（強み）セクション
+       ============================================= */
+    #approach {
+      padding: var(--section-py) 32px;
+      background: var(--black);
+    }
+
+    .approach-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 60px;
+    }
+
+    .approach-card {
+      background: var(--black);
+      padding: 40px 28px;
+      transition: background 0.2s;
+    }
+    .approach-card:hover { background: #0a0a0a; }
+
+    .approach-num {
+      font-family: var(--font-en);
+      font-size: 48px;
+      font-weight: 700;
+      color: rgba(201,161,74,0.15);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .approach-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .approach-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.9;
+    }
+
+    /* [変更] スキル一覧 */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 1px;
+    }
+
+    .skill-card {
+      background: var(--black);
+      padding: 28px;
+      transition: background 0.2s;
+    }
+    .skill-card:hover { background: #0a0a0a; }
+
+    .skill-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .skill-desc {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.8;
+    }
+
+    /* =============================================
+       [変更] メリット数値表示
+       ============================================= */
+    #benefits {
+      padding: var(--section-py) 32px;
+      background: var(--navy);
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 60px;
+    }
+
+    .benefit-card {
+      background: var(--navy);
+      padding: 40px 32px;
+      transition: background 0.2s;
+    }
+    .benefit-card:hover { background: var(--navy-light); }
+
+    .benefit-num {
+      font-family: var(--font-en);
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .benefit-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 16px;
+      border-left: 2px solid var(--gold);
+      padding-left: 10px;
+    }
+
+    .benefit-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .benefit-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.8;
+    }
+
+    /* =============================================
+       [変更] 研修の特徴
+       ============================================= */
+    #features {
+      padding: var(--section-py) 32px;
+      background: var(--black);
+    }
+
+    .features-list {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .feature-item {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 32px;
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+      transition: background 0.2s;
+    }
+    .feature-item:first-child { border-top: 1px solid var(--border); }
+
+    .feature-num {
+      font-family: var(--font-en);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: var(--text-sub);
+      padding-top: 4px;
+    }
+
+    .feature-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.9;
+    }
+
+    /* =============================================
+       [変更] 研修の様子（写真）
+       ============================================= */
+    #gallery {
+      padding: var(--section-py) 32px;
+      background: var(--navy);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 60px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7) saturate(0.8);
+      transition: filter 0.3s, transform 0.4s;
+    }
+    .gallery-item:hover img {
+      filter: brightness(0.85) saturate(1);
+      transform: scale(1.02);
+    }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 20px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      font-size: 12px;
+      color: var(--silver);
+      letter-spacing: 0.05em;
+    }
+
+    /* =============================================
+       [変更] 講師紹介
+       ============================================= */
+    #instructor {
+      padding: var(--section-py) 32px;
+      background: var(--black);
+    }
+
+    .instructor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 60px;
+    }
+
+    .instructor-card {
+      background: var(--black);
+      padding: 48px 40px;
+      transition: background 0.2s;
+    }
+    .instructor-card:hover { background: #070707; }
+
+    .instructor-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 24px;
+      filter: grayscale(20%);
+      border: 1px solid var(--border-gold);
+    }
+
+    .instructor-name {
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .instructor-role {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .instructor-section-title {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+
+    .instructor-text {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.9;
+    }
+
+    .instructor-achievements {
+      margin-top: 8px;
+    }
+    .instructor-achievements li {
+      font-size: 13px;
+      color: var(--text-sub);
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .instructor-achievements li::before {
+      content: '—';
+      color: var(--border-gold);
+    }
+
+    /* =============================================
+       [変更] 料金セクション
+       ============================================= */
+    #pricing {
+      padding: var(--section-py) 32px;
+      background: var(--navy);
+    }
+
+    .pricing-highlight {
+      margin-top: 60px;
+      border: 1px solid var(--border-gold);
+      padding: 48px;
+      text-align: center;
+      background: rgba(201,161,74,0.03);
+    }
+
+    .pricing-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .pricing-total {
+      font-family: var(--font-en);
+      font-size: 72px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .pricing-total-sub {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 40px;
+    }
+
+    .pricing-breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 40px;
+    }
+
+    .pricing-item {
+      background: var(--navy);
+      padding: 28px 20px;
+    }
+
+    .pricing-tier {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+    .pricing-amount {
+      font-family: var(--font-en);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .pricing-hours {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* 受講条件 */
+    .pricing-conditions {
+      margin-top: 40px;
+      text-align: left;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+    .pricing-conditions h4 {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+    .pricing-conditions ul li {
+      font-size: 13px;
+      color: var(--text-sub);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      padding-left: 16px;
+      position: relative;
+    }
+    .pricing-conditions ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+
+    /* =============================================
+       [変更] FAQ
+       ============================================= */
+    #faq {
+      padding: var(--section-py) 32px;
+      background: var(--black);
+    }
+
+    .faq-list {
+      margin-top: 60px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-main);
+      padding: 24px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color 0.2s;
+    }
+    .faq-question:hover { color: var(--white); }
+
+    .faq-question::after {
+      content: '+';
+      font-family: var(--font-en);
+      font-size: 20px;
+      color: var(--text-sub);
+      transition: transform 0.2s;
+    }
+
+    .faq-answer {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.9;
+      padding-bottom: 24px;
+      display: none;
+    }
+
+    .faq-item.open .faq-question::after { transform: rotate(45deg); }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* =============================================
+       [変更] ④ お問い合わせ
+       ============================================= */
+    #contact {
+      padding: var(--section-py) 32px;
+      background: var(--navy);
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 80px;
+      margin-top: 60px;
+    }
+
+    .contact-intro {
+      padding-top: 8px;
+    }
+
+    .contact-intro p {
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.9;
+      margin-top: 16px;
+    }
+
+    .contact-form-group {
+      margin-bottom: 24px;
+    }
+
+    .contact-form-group label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+
+    .contact-form-group input,
+    .contact-form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-size: 14px;
+      font-family: var(--font-ja);
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .contact-form-group input:focus,
+    .contact-form-group textarea:focus {
+      border-color: var(--blue);
+    }
+
+    .contact-form-group textarea {
+      height: 120px;
+      resize: none;
+    }
+
+    /* =============================================
+       [変更] ⑤ 会社概要
+       ============================================= */
+    #company {
+      padding: var(--section-py) 32px;
+      background: var(--black);
+      border-top: 1px solid var(--border);
+    }
+
+    .company-table {
+      width: 100%;
+      margin-top: 60px;
+      border-collapse: collapse;
+    }
+
+    .company-table tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .company-table th {
+      width: 180px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      font-weight: 400;
+      padding: 20px 0;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .company-table td {
+      font-size: 14px;
+      color: var(--text-main);
+      padding: 20px 0;
+    }
+
+    .company-table td a {
+      color: var(--blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* =============================================
+       [変更] フッター
+       ============================================= */
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 48px 32px;
+    }
+
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo img {
+      height: 28px;
+      opacity: 0.6;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--text-sub);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 12px;
+      color: var(--text-sub);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--blue); }
+
+    /* =============================================
+       CTA中間バナー
+       ============================================= */
+    .cta-banner {
+      padding: 80px 32px;
+      background: var(--navy-light);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .cta-banner-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 48px;
+    }
+    .cta-banner-text {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.5;
+    }
+    .cta-banner-text strong {
+      font-weight: 500;
+    }
+
+    /* =============================================
+       レスポンシブ（タブレット以下）
+       ============================================= */
+    @media (max-width: 768px) {
+      :root { --section-py: 70px; }
+
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+
+      .container, #hero, #courses, #approach, #benefits, #features, #gallery, #instructor, #pricing, #faq, #contact, #company, footer { padding-left: 20px; padding-right: 20px; }
+
+      .hero-en { font-size: 48px; }
+
+      .courses-grid,
+      .programs-grid,
+      .approach-grid,
+      .benefits-grid,
+      .skills-grid,
+      .instructor-grid,
+      .pricing-breakdown { grid-template-columns: 1fr; }
+
+      .gallery-grid { grid-template-columns: 1fr; }
+
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+
+      .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
+
+      .cta-banner-inner { flex-direction: column; }
+
+      .pricing-highlight { padding: 32px 20px; }
+      .pricing-total { font-size: 52px; }
+
+      .company-table th { width: 120px; }
+    }
+
+    /* =============================================
+       スクロールアニメーション（軽量）
+       ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================
+       [変更] ナビゲーション（固定・ミニマル）
+       ======================================== -->
+  <header>
+    <nav>
+      <!-- [維持] ロゴ -->
+      <a href="#" class="nav-logo">
+        <img
+          src="https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/axia-beauty-college-logo_464412b8.jpeg"
+          alt="株式会社Axia.City"
+        />
+      </a>
+      <!-- [変更] ナビリンク（シンプルに整理） -->
+      <ul class="nav-links">
+        <li><a href="#courses">研修</a></li>
+        <li><a href="#approach">アプローチ</a></li>
+        <li><a href="#instructor">講師</a></li>
+        <li><a href="#pricing">料金</a></li>
+        <li><a href="https://axia-city-academy.manus.space/company-profile">会社案内</a></li>
+      </ul>
+      <a href="#contact" class="btn-primary">お問い合わせ</a>
+    </nav>
+  </header>
+
+
+  <!-- ========================================
+       [変更] ① ファーストビュー
+       英語+日本語キャッチ / ボタン1つ
+       ======================================== -->
+  <section id="hero">
+    <div class="hero-inner">
+
+      <!-- [変更] ターゲット明示ラベル -->
+      <div class="hero-target">For Multi-Location Salon Owners</div>
+
+      <!-- [変更] 英語キャッチ（力強く・短く） -->
+      <h1 class="hero-en">Transform<br /><span>Your</span> Salon.</h1>
+
+      <!-- [変更] 日本語サブキャッチ -->
+      <p class="hero-ja">サロン経営を"仕組み"に変える</p>
+
+      <!-- [変更] タグライン（断定的・コンサル風） -->
+      <p class="hero-tagline">
+        年商5億〜の多店舗サロンに特化した<br />
+        生成AI × 経営OS構築プログラム。<br />
+        属人経営から脱却し、AIで再現性のある経営を実装する。
+      </p>
+
+      <!-- [変更] ボタン1つ（シンプル） -->
+      <div class="hero-cta">
+        <a href="#contact" class="btn-primary">研修を申し込む</a>
+        <a href="#courses" class="btn-outline">プログラムを見る</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] ② サービス（生成AI講座 3コース）
+       ======================================== -->
+  <section id="courses">
+    <div class="container">
+
+      <!-- セクションラベル -->
+      <div class="section-label reveal">Service</div>
+      <h2 class="section-title reveal">AI Training Program</h2>
+      <p class="section-title-ja reveal">美容師特化の生成AI実践講座 — 全36時間・3コース構成</p>
+
+      <!-- [変更] 3コース グリッド -->
+      <div class="courses-grid">
+
+        <!-- ベーシック -->
+        <div class="course-card reveal">
+          <div class="course-level">Basic</div>
+          <h3 class="course-title">生成AIの基礎</h3>
+          <p class="course-desc">
+            生成AIの本質を理解し、美容室での実践的な活用を習得。
+            ChatGPTの使い方から安全な運用基準まで体系的に学ぶ。
+          </p>
+          <div class="course-hours">12<span> hrs</span></div>
+          <ul class="course-items">
+            <li>ChatGPTとは何か</li>
+            <li>AIでできること／できないこと</li>
+            <li>美容室での活用事例</li>
+            <li>安全な使い方</li>
+          </ul>
+        </div>
+
+        <!-- アドバンス -->
+        <div class="course-card reveal">
+          <div class="course-level">Advance</div>
+          <h3 class="course-title">現場で使える実践プロンプト</h3>
+          <p class="course-desc">
+            業務を即時加速させる実践スキルを習得。
+            美容師専用プロンプトを多数用意し、明日から現場で活用できる。
+          </p>
+          <div class="course-hours">12<span> hrs</span></div>
+          <ul class="course-items">
+            <li>Instagram投稿自動生成</li>
+            <li>カウンセリングトーク作成</li>
+            <li>スタッフ教育マニュアル作成</li>
+            <li>求人原稿自動作成</li>
+            <li>売上分析 / 物販提案トーク生成</li>
+          </ul>
+        </div>
+
+        <!-- プロフェッショナル -->
+        <div class="course-card reveal">
+          <div class="course-level">Professional</div>
+          <h3 class="course-title">AIで"仕組み"を作る</h3>
+          <p class="course-desc">
+            AIを活用したツール制作・システム構築を完遂する力を習得。
+            「使う」から「作る」への転換を実現する最終フェーズ。
+          </p>
+          <div class="course-hours">12<span> hrs</span></div>
+          <ul class="course-items">
+            <li>Claude Code活用</li>
+            <li>顧客分析ツール制作</li>
+            <li>予約管理補助ツール制作</li>
+            <li>売上予測システム</li>
+            <li>業務自動化システム構築</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /container -->
+
+    <div class="section-divider" style="margin-top:80px;"></div>
+
+    <!-- [変更] その他研修プログラム -->
+    <div class="container" style="margin-top:80px;">
+      <div class="section-label reveal">Other Programs</div>
+      <h2 class="section-title reveal">Consulting Programs</h2>
+      <p class="section-title-ja reveal">サロン経営を加速させる実地研修プログラム</p>
+
+      <div class="programs-grid">
+
+        <!-- Axia.PRO -->
+        <div class="program-card reveal">
+          <div class="program-tag">経営者研修 / 12回コース</div>
+          <div class="program-name">Axia.PRO</div>
+          <div class="program-subtitle">経営者向け集中プログラム</div>
+          <p class="program-desc">
+            全国の有名講師が毎週登壇。"5年で20店舗展開"を理念に
+            サロン経営の本質を体系的に学ぶ。
+          </p>
+          <div class="program-price">¥440,000<small>（税込）/ 全額一括</small></div>
+          <ul class="program-items">
+            <li>毎週火曜日開催（3ヶ月間）</li>
+            <li>全国の有名講師が毎週登壇</li>
+            <li>"5年で20店舗展開"を理念に学ぶ</li>
+            <li>経営者同士のネットワーク構築</li>
+          </ul>
+        </div>
+
+        <!-- Axia.Exclusive -->
+        <div class="program-card reveal">
+          <div class="program-tag">幹部研修 / 12回コース</div>
+          <div class="program-name">Axia.Exclusive</div>
+          <div class="program-subtitle">幹部・次期店長を育成</div>
+          <p class="program-desc">
+            講師がサロンに訪問し、幹部・店長・次期店長を育成。
+            経営OSを制作・強化する実地型研修。
+          </p>
+          <div class="program-price">¥220,000<small>（税込）/ 月</small></div>
+          <ul class="program-items">
+            <li>月１回の１年間研修コース</li>
+            <li>講師がサロンに訪問して指導</li>
+            <li>幹部・店長・次期店長を育成</li>
+            <li>経営OSの制作・強化</li>
+          </ul>
+        </div>
+
+        <!-- Axia.mini -->
+        <div class="program-card reveal">
+          <div class="program-tag">スタッフ育成研修 / 12回コース</div>
+          <div class="program-name">Axia.mini</div>
+          <div class="program-subtitle">次世代エースを育成</div>
+          <p class="program-desc">
+            講師がサロンに訪問し、スタッフの売上を向上。
+            次世代エースを育成し、組織の生産性を強化する。
+          </p>
+          <div class="program-price">¥220,000<small>（税込）/ 月</small></div>
+          <ul class="program-items">
+            <li>月１回の１年間研修コース</li>
+            <li>講師がサロンに訪問して指導</li>
+            <li>スタッフの売上向上を実現</li>
+            <li>次世代エースの育成</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div style="margin-top:48px; text-align:left;">
+        <a href="#contact" class="btn-primary">研修の詳細を聞く</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] ③ メリット（数値で示す）
+       ======================================== -->
+  <section id="benefits">
+    <div class="container">
+      <div class="section-label reveal">Impact</div>
+      <h2 class="section-title reveal">Measurable Results</h2>
+      <p class="section-title-ja reveal">生成AIを学習することで実現できる3つの変革</p>
+
+      <div class="benefits-grid">
+
+        <!-- 業務効率 -->
+        <div class="benefit-card reveal">
+          <div class="benefit-num">70<span style="font-size:28px;">%</span></div>
+          <div class="benefit-label">業務時間削減</div>
+          <h3 class="benefit-title">業務効率の劇的な向上</h3>
+          <p class="benefit-desc">
+            SNS投稿、カウンセリングトーク作成、教育マニュアル制作の時間を大幅に短縮。
+            本来の施術業務に集中できる環境を構築する。
+          </p>
+        </div>
+
+        <!-- アイデア創出 -->
+        <div class="benefit-card reveal">
+          <div class="benefit-num">85<span style="font-size:28px;">%</span></div>
+          <div class="benefit-label">アイデア創出能力向上</div>
+          <h3 class="benefit-title">新規ビジネス創出力</h3>
+          <p class="benefit-desc">
+            AIとの協働で斬新なアイデアや解決策を生み出す能力を開発。
+            新規メニュー開発・競合優位性のある戦略立案に直結する。
+          </p>
+        </div>
+
+        <!-- 市場価値 -->
+        <div class="benefit-card reveal">
+          <div class="benefit-num">2026</div>
+          <div class="benefit-label">デジタル人材スキル</div>
+          <h3 class="benefit-title">市場価値・競争力の強化</h3>
+          <p class="benefit-desc">
+            AI活用スキルを持つ美容師の需要は今後ますます拡大。
+            サロンの競争力強化とキャリアアップに直結する必須スキルを習得する。
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] ③ アプローチ（課題→戦略→実行）
+       ======================================== -->
+  <section id="approach">
+    <div class="container">
+      <div class="section-label reveal">Approach</div>
+      <h2 class="section-title reveal">Our Methodology</h2>
+      <p class="section-title-ja reveal">超実践的カリキュラムで「できる」を実現する3つの強み</p>
+
+      <div class="approach-grid">
+
+        <div class="approach-card reveal">
+          <div class="approach-num">01</div>
+          <h3 class="approach-title">超実践的カリキュラム</h3>
+          <p class="approach-desc">
+            座学だけでなく実際に手を動かして「できる」まで徹底サポート。
+            美容室の現場で明日から使える実用的な内容を厳選。
+          </p>
+        </div>
+
+        <div class="approach-card reveal">
+          <div class="approach-num">02</div>
+          <h3 class="approach-title">美容師特化の専門設計</h3>
+          <p class="approach-desc">
+            美容師専用のプロンプトや活用事例を多数用意。
+            専門用語を知らなくてもAIを使いこなせる設計を実現する。
+          </p>
+        </div>
+
+        <div class="approach-card reveal">
+          <div class="approach-num">03</div>
+          <h3 class="approach-title">「使う」から「作る」へ</h3>
+          <p class="approach-desc">
+            AIツールの活用だけでなく、顧客分析ツールや売上予測システムを
+            自ら構築する力を養成。経営の仕組みを自分で作れる人材を育成する。
+          </p>
+        </div>
+
+      </div>
+
+      <!-- スキル一覧 -->
+      <div class="skills-grid">
+        <div class="skill-card reveal">
+          <div class="skill-title">AIツールの使い分け</div>
+          <p class="skill-desc">ChatGPT・Claude等を目的に合わせて効果的に使い分ける能力を習得</p>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-title">業務効率化</div>
+          <p class="skill-desc">日常業務をAIで効率化し、施術に集中できる環境を構築</p>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-title">コンテンツ制作</div>
+          <p class="skill-desc">Instagram投稿、求人原稿、教育マニュアルの自動生成スキル</p>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-title">データ分析活用</div>
+          <p class="skill-desc">売上分析・顧客分析データの解析とビジネス意思決定への活用</p>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-title">ツール・システム制作</div>
+          <p class="skill-desc">顧客分析ツール、予約管理補助ツール等の制作スキル</p>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-title">業務自動化</div>
+          <p class="skill-desc">売上予測システムや業務自動化システムの構築方法</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] 動画研修の特徴
+       ======================================== -->
+  <section id="features">
+    <div class="container">
+      <div class="section-label reveal">Features</div>
+      <h2 class="section-title reveal">eラーニング形式</h2>
+      <p class="section-title-ja reveal">
+        動画研修でいつでも・どこでも学べる。視聴期間6ヶ月間。
+      </p>
+
+      <div class="features-list">
+
+        <div class="feature-item reveal">
+          <div class="feature-num">F.01</div>
+          <div>
+            <h3 class="feature-title">営業時間中に視聴して学べる</h3>
+            <p class="feature-desc">
+              動画研修だからサロンの営業時間中にスタッフが交代で視聴可能。
+              現場を止めずに学習を進められる。スマホやPCからいつでもアクセス。
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal">
+          <div class="feature-num">F.02</div>
+          <div>
+            <h3 class="feature-title">繰り返し視聴による理解の深化</h3>
+            <p class="feature-desc">
+              一度で覚えきれなくても何度でも視聴OK。
+              繰り返し学習で研修内容の定着を確実に実現する。
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-item reveal">
+          <div class="feature-num">F.03</div>
+          <div>
+            <h3 class="feature-title">全スタッフへの均一な教育を提供</h3>
+            <p class="feature-desc">
+              全スタッフに同じ内容の研修を提供でき、教育のムラを排除。
+              組織全体の業務効率向上と標準化を実現する。
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [維持] 研修の様子（画像そのまま）
+       ======================================== -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-label reveal">Gallery</div>
+      <h2 class="section-title reveal">Research Sessions</h2>
+      <p class="section-title-ja reveal">
+        全国の美容室経営者・幹部が参加する実践型研修プログラム
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="gallery-grid">
+        <!-- [維持] 画像はすべてオリジナルのまま -->
+        <div class="gallery-item reveal">
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/training-group-1_a1f52613.jpeg"
+            alt="研修受講者との集合写真"
+          />
+          <div class="gallery-caption">研修受講者との集合写真</div>
+        </div>
+        <div class="gallery-item reveal">
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/training-class_e083ac41.jpeg"
+            alt="AI活用の実践講義風景"
+          />
+          <div class="gallery-caption">AI活用の実践講義風景</div>
+        </div>
+        <div class="gallery-item reveal">
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/training-group-2_4f4c754c.jpeg"
+            alt="全国から集まった受講者たち"
+          />
+          <div class="gallery-caption">全国から集まった受講者たち</div>
+        </div>
+        <div class="gallery-item reveal">
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/training-group-3_76cd33d6.jpeg"
+            alt="少人数制の実践ワークショップ"
+          />
+          <div class="gallery-caption">少人数制の実践ワークショップ</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       CTA バナー（中間）
+       ======================================== -->
+  <div class="cta-banner">
+    <div class="cta-banner-inner">
+      <p class="cta-banner-text">
+        「AIを導入していない美容室は<br />
+        <strong>3年後どうなるか？」</strong>
+      </p>
+      <a href="#contact" class="btn-primary">まず相談してみる</a>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] 講師紹介
+       ======================================== -->
+  <section id="instructor">
+    <div class="container">
+      <div class="section-label reveal">Instructors</div>
+      <h2 class="section-title reveal">Leadership</h2>
+      <p class="section-title-ja reveal">現場経営の実体験と体系化能力を持つ2名が指導する</p>
+
+      <div class="instructor-grid">
+
+        <!-- 秋葉 湧 -->
+        <div class="instructor-card reveal">
+          <!-- [維持] 画像 -->
+          <img
+            class="instructor-img"
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/instructor-akiba_dec08768.jpeg"
+            alt="秋葉 湧"
+          />
+          <h3 class="instructor-name">秋葉 湧</h3>
+          <p class="instructor-role">株式会社Axia.City 代表 ｜ 美容経営コンサルタント</p>
+
+          <div class="instructor-section-title">Background</div>
+          <p class="instructor-text">
+            茨城県出身。19歳で美容業界に入り、23歳で独立。
+            23〜29歳まで美容室を経営し、現場運営・人材育成・組織構築を実践。
+            その後、現場経営の知見を体系化し教育事業へ転換。
+          </p>
+
+          <div class="instructor-section-title">Achievements</div>
+          <ul class="instructor-achievements">
+            <li>大学講師として「美容×キャリア×経営」を指導</li>
+            <li>美容学校のM&Aに参画し理事長に就任</li>
+            <li>年間400本を超えるセミナー登壇</li>
+            <li>AI・Notionを活用した経営管理システム構築</li>
+            <li>KPI設計／幹部育成／組織再構築支援</li>
+          </ul>
+
+          <div class="instructor-section-title">Expertise</div>
+          <p class="instructor-text">
+            現場経営者としての実体験と教育者としての体系化能力を掛け合わせた
+            "感覚に頼らない経営設計"が強み。
+            「属人経営からの脱却」「AI活用による生産性向上」を支援。
+          </p>
+        </div>
+
+        <!-- 望月 真也 -->
+        <div class="instructor-card reveal">
+          <!-- [維持] 画像 -->
+          <img
+            class="instructor-img"
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/instructor-mochizuki_9fc1a49e.jpeg"
+            alt="望月 真也"
+          />
+          <h3 class="instructor-name">望月 真也</h3>
+          <p class="instructor-role">株式会社M.O.E 代表取締役 ｜ 多店舗サロン経営者</p>
+
+          <div class="instructor-section-title">Background</div>
+          <p class="instructor-text">
+            2015年10月に株式会社M.O.Eを設立。神奈川県平塚市にflammeum平塚店をオープン。
+            起業当初から正社員雇用にこだわり、若手教育・リーダー育成を実践しながら多店舗展開を推進。
+          </p>
+
+          <div class="instructor-section-title">Business Scale</div>
+          <ul class="instructor-achievements">
+            <li>トータルビューティーサロン 21店舗展開</li>
+            <li>美容室 flammeum 20店舗</li>
+            <li>マツエクサロン Richell eyelash 3店舗</li>
+            <li>正社員数 430名</li>
+          </ul>
+
+          <div class="instructor-section-title">Philosophy</div>
+          <p class="instructor-text">
+            "業界革命" — 正社員雇用と若手育成を軸にした多店舗展開で美容業界の常識を変える。
+            実体験に基づきAI活用による経営効率化と人材育成の両立を実現。
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] 料金
+       ======================================== -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-label reveal">Pricing</div>
+      <h2 class="section-title reveal">Investment</h2>
+      <p class="section-title-ja reveal">美容師特化の生成AI実践講座（全36時間・3コースセット）</p>
+
+      <div class="pricing-highlight reveal">
+        <div class="pricing-label">3コースセット受講（必須）</div>
+        <div class="pricing-total">¥1,200,000</div>
+        <div class="pricing-total-sub">税込 / 1名あたり（1コース ¥400,000 × 3コース）</div>
+
+        <div class="pricing-breakdown">
+          <div class="pricing-item">
+            <div class="pricing-tier">Basic</div>
+            <div class="pricing-amount">¥400,000</div>
+            <div class="pricing-hours">税込 / 1名 / 12時間</div>
+          </div>
+          <div class="pricing-item">
+            <div class="pricing-tier">Advance</div>
+            <div class="pricing-amount">¥400,000</div>
+            <div class="pricing-hours">税込 / 1名 / 12時間</div>
+          </div>
+          <div class="pricing-item">
+            <div class="pricing-tier">Professional</div>
+            <div class="pricing-amount">¥400,000</div>
+            <div class="pricing-hours">税込 / 1名 / 12時間</div>
+          </div>
+        </div>
+
+        <div class="pricing-conditions">
+          <h4>受講条件</h4>
+          <ul>
+            <li>3コース（ベーシック・アドバンス・プロフェッショナル）のセット受講が必須</li>
+            <li>1社あたり4名以上でのお申込みが必要</li>
+            <li>営業時間中に視聴して学ぶ動画研修（eラーニング）形式</li>
+            <li>eラーニング視聴期間：6ヶ月間</li>
+            <li>4名受講の場合：¥400,000 × 4名 × 3コース ＝ ¥4,800,000</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] FAQ（アコーディオン）
+       ======================================== -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-label reveal">FAQ</div>
+      <h2 class="section-title reveal">Frequently Asked Questions</h2>
+
+      <div class="faq-list">
+
+        <div class="faq-item reveal">
+          <div class="faq-question">研修の利用料金はどのようになっていますか？</div>
+          <div class="faq-answer">
+            1名あたり1コース40万円（税込）、3コースセット受講が必須となります。
+            4名受講の場合、合計480万円（税込）となります。詳細はお問い合わせください。
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <div class="faq-question">申し込み後、どれくらいで受講開始になりますか？</div>
+          <div class="faq-answer">
+            お申込み確認後、詳細な日程をご案内いたします。
+            具体的なスケジュールはお問い合わせにてご確認ください。
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <div class="faq-question">研修についてもっと詳しく知りたいです。</div>
+          <div class="faq-answer">
+            お問い合わせフォームよりご連絡ください。
+            担当者より詳細なご案内をいたします。
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <div class="faq-question">何名から受講できますか？</div>
+          <div class="faq-answer">
+            1社あたり4名以上でのお申込みが必要となります。
+            詳しくはお問い合わせください。
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] ⑤ お問い合わせ
+       ======================================== -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-label reveal">Contact</div>
+      <h2 class="section-title reveal">Get in Touch</h2>
+
+      <div class="contact-inner">
+        <div class="contact-intro reveal">
+          <p class="section-title-ja" style="margin-bottom:16px;">研修内容について<br />お気軽にご質問ください。</p>
+          <p>研修の内容・料金・受講条件など、どんなことでもお気軽にお問い合わせください。担当者より返信いたします。</p>
+        </div>
+
+        <form class="contact-form reveal">
+          <div class="contact-form-group">
+            <label>会社名・サロン名</label>
+            <input type="text" placeholder="株式会社〇〇" />
+          </div>
+          <div class="contact-form-group">
+            <label>お名前 *</label>
+            <input type="text" placeholder="山田 太郎" required />
+          </div>
+          <div class="contact-form-group">
+            <label>メールアドレス *</label>
+            <input type="email" placeholder="your@email.com" required />
+          </div>
+          <div class="contact-form-group">
+            <label>電話番号</label>
+            <input type="tel" placeholder="000-0000-0000" />
+          </div>
+          <div class="contact-form-group">
+            <label>お問い合わせ内容 *</label>
+            <textarea placeholder="研修内容について詳しく聞きたい。" required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; padding:16px;">送信する</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+
+  <!-- ========================================
+       [変更] ④ 会社概要
+       ======================================== -->
+  <section id="company">
+    <div class="container">
+      <div class="section-label reveal">Company</div>
+      <h2 class="section-title reveal">Company Profile</h2>
+
+      <!-- [維持] 会社情報テーブル（内容そのまま） -->
+      <table class="company-table reveal">
+        <tbody>
+          <tr>
+            <th>会社名</th>
+            <td>株式会社Axia.City</td>
+          </tr>
+          <tr>
+            <th>代表者</th>
+            <td>秋葉 湧</td>
+          </tr>
+          <tr>
+            <th>所在地</th>
+            <td>福岡県福岡市博多区上川端町3-6</td>
+          </tr>
+          <tr>
+            <th>メール</th>
+            <td><a href="mailto:info@axia-city.co.jp">info@axia-city.co.jp</a></td>
+          </tr>
+          <tr>
+            <th>事業内容</th>
+            <td>
+              美容業界専門の教育会社。<br />
+              経営者・幹部向けにAI活用研修・KPI設計支援・<br />
+              組織マネジメント再構築・Notion経営OS導入支援を提供。
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+  <!-- ========================================
+       [変更] フッター
+       ======================================== -->
+  <footer>
+    <div class="footer-inner">
+      <!-- [維持] ロゴ -->
+      <div class="footer-logo">
+        <img
+          src="https://d2xsxph8kpxj0f.cloudfront.net/310519663483844307/LXuyXxdow5ig2BbE4QtkNH/axia-beauty-college-logo_464412b8.jpeg"
+          alt="株式会社Axia.City"
+        />
+      </div>
+
+      <div class="footer-copy">© 2026 株式会社Axia.City All Rights Reserved.</div>
+
+      <div class="footer-links">
+        <a href="https://axia-city-academy.manus.space/company-profile">会社案内</a>
+        <a href="#contact">お問い合わせ</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ========================================
+       [変更] JavaScript - スクロールアニメーション & FAQ
+       ======================================== -->
+  <script>
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        item.classList.toggle('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
